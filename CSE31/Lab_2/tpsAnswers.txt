@@ -1,0 +1,42 @@
+Ethan Hom
+
+https://aaronbloomfield.github.io/pdr/tutorials/02-lldb/index.html
+https://lldb.llvm.org/use/map.html
+https://lldb.llvm.org/use/tutorial.html
+https://developer.apple.com/library/archive/documentation/IDEs/Conceptual/gdb_to_lldb_transition_guide/document/lldb-command-examples.html#//apple_ref/doc/uid/TP40012917-CH3-SW1
+
+TPS 2
+1. "gcc -g punishment.c -o punish"
+2. "lldb punish"
+3. "r"
+4. Breakpoints are intentional stops in the program for debugging. We use "breakpoint set -f punishment.c -l 26"
+5. To run the rest of the program or run until another breakpoint, we can use the command "c". To run line by line, "next"
+6. Use "frame variable" or "fr v" to show the variable values currently in the program. If I am targetting the variable 'i', then I would type "fr v i"
+7. "c"
+8. "quit"
+
+
+TPS 3
+1. There are 4 variables declared. Two of them are pointers.
+2. The values of x, y, and arr[0] can be anything, they are holding garbage values because we haven't set them to anything.
+3. We have to set them. Example: "x = 0, y = 0; for (int i = 0; i < 10; i++){arr[i] = i;}"
+4. 
+    printf("%p\n", &x);
+    printf("%p\n", &y);
+5. 
+    px = &x;
+    py = &y;
+    printf("%d\n", *px);
+    printf("%d\n", *py);
+    printf("%p\n", px);
+    printf("%p\n", py);
+6.
+    int* a = arr;
+    for (int i = 0; i < 10; i++){
+        printf("%d\n", *a);
+        *a++;
+    }
+7. It appears that *arr will print arr[0].
+    printf("%d\n", *arr);
+8. It makes sense, it shows it is right after x and y.
+    printf("%p\n", &arr);s

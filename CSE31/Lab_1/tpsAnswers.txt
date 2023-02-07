@@ -1,0 +1,36 @@
+TPS 1
+
+Ethan Hom
+Aaron Rong
+Zayd Andre
+Alice Truong
+
+
+Linus tutorials
+- https://ubuntu.com/tutorials/command-line-for-beginners#1-overview 
+- https://maker.pro/linux/tutorial/basic-linux-commands-for-beginners
+- https://www.digitalocean.com/community/tutorials/an-introduction-to-the-linux-terminal
+
+
+TPS 2
+
+1. I find the terminal app on my computer
+a. Yes, it is possible to open multiple terminals at the same time
+b. I would want to open multiple terminals at once to run multiple tasks at the same time
+2. By typing “ls”
+3. Assuming our desktop directory is in our home directory and we are already in the home directory, “cd Desktop”
+4. “mkdir CSE31”
+
+
+TPS 3
+
+1. https://www.geeksforgeeks.org/gcc-command-in-linux-with-examples/ 
+https://www.javatpoint.com/gcc-linux 
+2. 
+3. “gcc main.c”
+4. No error messages and I can run the executable “./a.out”
+5. -c complies the program and gives the object file as output
+6. For debugging
+7. “mv main.c cselab1.c”
+8. It would compile and create an executable called “a.out”
+9. ./a.out

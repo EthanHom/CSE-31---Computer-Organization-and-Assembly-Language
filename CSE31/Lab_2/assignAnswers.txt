@@ -1,0 +1,14 @@
+Assignment 1
+
+1) Line 22 causes a segmentation fault.
+2) scanf("%d", input); -> scanf("%d", &input);
+3) read_values is adding up the sum, but not updating the sum in the main function.
+4) We change "int read_values(double sum) {" to "int read_values(double *sum) {"; in the function, we change all the "sum" to "*sum"; and in the main function, we change "values = read_values(sum);" to "values = read_values(&sum);"
+
+
+Assignment 2
+
+1) The program with "HELLO!" and "hello!" worked as intended. It successfully appended the ouput "HELLO!hello!"
+2) The program did not correctly output "HI!hi!" and instead printed "HI!hi!hello!". After I fixed it, it now works.
+3) The output is not expected. I think this happens because the program does not know how to read the spaces since it is of type char.
+

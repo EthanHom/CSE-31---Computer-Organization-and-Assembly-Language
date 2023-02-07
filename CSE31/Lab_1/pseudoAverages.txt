@@ -1,0 +1,23 @@
+
+Ethan Hom
+Aaron Rong
+Zayd Andre
+Alice Truong
+
+int num = 0, evenNum = 0, evenCount = 0, oddNum = 0, oddCount = 0, mod = 0, sum = 0, result = 0, count = 1;
+Ask user for number (num)
+While loop as long as the user input is not zero (num != 0):
+       Add the numbers together
+       Num mod 10
+	While loop for the number /10 not equal to zero
+       sum += mod
+       num/10
+       num mod 10 
+	if the sum is even, add the numbers to evenNum and add one to evenCount
+	else, add the numbers to oddNum and add one to oddcount
+	
+	for numbers such as 1, to get “st”, if statement: count mod 10 equal to 1 and count mod 100 is not equal to 11
+	do the same for “nd” and “rd” but change 1 and 11 to 2/12, 3/13
+	
+	ask user for number
+print the averages, if there is no number, do not print
