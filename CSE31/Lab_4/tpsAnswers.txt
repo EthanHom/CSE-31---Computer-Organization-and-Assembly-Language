@@ -1,0 +1,48 @@
+TPS 1
+
+1. I expect "2" to be printed both times.
+2. I expect four_ints at the end of the program to print "2".
+3. At the end of the program, four_ints[0] prints 44434241.
+4. four_ints[1] prints 2. I am pretty confused how four_ints[0] changed but four_ints[1] did not change.
+5. 
+    a) One array was allocated.
+    b) Yes, I believe four_ints and four_c are pointing in the same place because four_c is the char pointer of four_ints.
+    c) I am not totally sure if this verifies it is pointing in the same place, but four_ints[0] = 44434241 which is all of four_c's values (four_c[0] = 41, four_c[1] = 42, ...)
+6. four_ints[i] increases by 4 after i increases by 1.
+7. DRAWING
+8. This verifies four_ints[0] and four_c[0] points to the same location, however, we now know that four_c's address only increases by one when i in the loop increases by one.
+9. DRAWING
+10. We know ints are of size 4 and char is of size 1, so the program makes sense because four_ints increments by one to get the next value which is of size 4; four_c is a char pointer so it only increases by one.
+
+
+TPS 2
+
+1. This line initiallizes the double pointer arr (**arr) and allocates memory of int* 
+2. The dereference of **arr to access its value is *arr. To access the ith value, *(arr + i)
+3. 
+    for(int i = 0; i < n; i++){
+        *(arr + i) = (int*)malloc(n * sizeof(int));
+    }
+
+	for (i = 0; i < n; i++){
+		for (j = 0; j < n; j++){
+			*(*(arr + i) + j) = 0;
+		}
+	}
+4. We need to pass the size because pointers for c don't tell us the size.
+5. 
+    for (int i = 0; i < size; i++){
+		for (int j = 0; j < size; j++){
+			printf("%d", *(*(array + i) + j));
+		}
+		printf("\n");
+	}
+6. 
+    for (i = 0; i < n; i++){
+		for (j = 0; j < n; j++){
+			if (i == j){
+				*(*(arr + i) + j) = (i + 1);
+			}
+		}
+	}
+7. 

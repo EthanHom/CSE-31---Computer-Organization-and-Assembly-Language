@@ -1,0 +1,24 @@
+TPS 1
+
+1. The 3 pools for memory are the stack, heap, and static storage. In the stack, we store local variables, parameters, and return addresses. In the heap, we have dynamic memory where data lives there until deallocated by the programmer. In static storage, we store global/permanent variables.
+2.
+    a) There are 3 variables declared
+    b) There are 2 pointers. One is a pointer and the other is a double pointer. *ptr points to num (int). **handle points to the ptr(int *).
+    c) num is in the stack, ptr is initialized in the stack but allocates memory in the heap pointing to num (in the stack)/ptr is in the heap and *ptr is in the stack, and handle is initalized in the stack but allocates memory in the heap pointing to ptr (which is in the heap)/handle is in the heap and *handle is in the stack.
+    d) ptr is allocating memory in the heap
+3-4. In attached pdf named "Lab3TPS.pdf"
+
+
+TPS 2
+
+1. This program creates a data structure called Node. Node allocates memory and makes space for two values.
+2. 
+    head = 670063792
+    *head = 5
+    &head = -1105922944
+    &iValue = 670063792
+    &fValue = 670063796
+    &head->next = 670063800
+
+    iValue +4 = fValue +4 = head->next
+3. They're all together. iValue is 4 before fValue, and fValue is 4 before next. The head is the first value (iValue) and next is after both i+fValue.

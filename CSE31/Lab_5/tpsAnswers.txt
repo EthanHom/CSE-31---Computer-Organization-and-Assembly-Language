@@ -1,0 +1,28 @@
+TPS 1
+
+1. MARS stands for MIPS Assembler and Runtime Simulator
+5. 
+    a. Press open and find the file
+    b. Press compile
+    c. Press run then go
+    d. You cannot run without assembling first
+    e. Press step
+    f. Press reset and then go
+
+
+TPS 2
+
+1. 
+    .data is for defining the program data (static data segment) (declaring initialized data or constants)
+    .word is for used to allocate and initialize space for a variable/size of data
+    .text is for defining the program instructions (text segment)
+2. Line 10 will branch if equal or jump to finish
+3. What does line 15 do? 
+4. How do you set a breakpoint in MARS? Set breakpoint on line 15 and list the steps of achieving this. 
+5. After your program stops because of a breakpoint, how do you continue to execute your code? How do 
+you step through your code? 
+6. How can you find out the content of a register? How do you modify the value of a register manually 
+while running the program?  
+7. At what address is n stored in memory? Calculate the 13th fib number by modifying this memory 
+location. 
+8. Line 19 and 21 use the syscall instruction. What is it and how do you use it? 
