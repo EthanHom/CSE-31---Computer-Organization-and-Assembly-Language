@@ -1,0 +1,96 @@
+TPS 1
+
+1. Procedures and functions are often used interchangeably and are subroutines that return control to the calling code after execution. Methods are similar but are associated with objects in object-oriented programming and can access and manipulate the object's data.
+2. The compiled program is loaded into the static part of the memory when it is being executed. The CPU executes the statements sequentially unless there is a branch or jump statement that tells it to go to a different part of the code.
+3. 
+    #include <stdio.h>
+
+    int sum(int a, int b) {
+        return a + b;
+    }
+
+    int main() {
+        int m = 10;
+        int n = 5;
+        int result = sum(m, n);
+        printf("%d\n", result);
+        return 0;
+    }
+4. The line number pointed to by the label SUM is the line right after the instruction add $v0, $a0, $a1. This line moves the sum of the values in $a0 and $a1 to $v0.
+5. No, we cannot use j instead of jr $ra to return from the function. jr $ra jumps to the address in the $ra register, which contains the return address of the calling code. j just jumps to a label without saving the return address.
+6. The return address is supposed to be saved at the line right before j SUM. The address is saved to the $ra register. The value of the address being saved is the address of the instruction immediately following addi $ra, $zero, 0, which is the address of the instruction j SUM. Yes, this address value makes sense.
+7. When we try to run the program, it encounters an error because the return address in $ra is invalid. The program is trying to jump to an address that is not a valid instruction.
+8. The address of the statement that the program should return to from SUM is the address of the instruction immediately after j SUM. In other words, it is the address of the instruction addi $a0, $v0, 0.
+9. To save the correct return address, we need to replace addi $ra, $zero, 0 with addi $ra, $zero, 4 to save the address of the instruction immediately following addi $ra, $zero, 4. The new return address is the address of the instruction immediately following j SUM. After assembling the code and looking at the Text Segment, we can see that the return address is now correct.
+10. The new return address is the address of the instruction immediately following j SUM, which is the address of the instruction addi $a0, $v0, 0. After modifying the code and assembling and running the program, the output should be 15.
+11. Instead of using j to call a procedure, we should use jal. jal jumps to the specified label and saves the return address in $ra.
+12. 
+    .data
+m:  .word 10
+n:  .word 5
+
+    .text
+MAIN:   la $t0, m            # Load address of m
+        lw $a0, 0($t0)      # a0 = m
+        la $t0, n            # Load address of n
+        lw $a1, 0($t0)      # a1 = n
+
+        jal SUM             # Call SUM and save return address automatically
+        
+        addi $a0, $v0, 0    # Print out result
+        li $v0, 1           
+        syscall     
+
+        j END
+
+SUM:    add $v0, $a0, $a1
+        jr $ra
+
+END:
+
+
+old:
+
+        .data
+m: 		.word 10
+n: 		.word 5
+
+		.text
+MAIN:	la $t0, m			# Load address of m
+		lw $a0, 0($t0)		# a0 = m
+		la $t0, n			# Load address of n
+		lw $a1, 0($t0)		# a1 = n
+	
+		addi $ra,$zero, 0	# Replace 0 with a correct return address 
+		j SUM
+		
+		addi $a0, $v0, 0	# Print out result
+		li $v0, 1		 
+		syscall	
+		
+		j END
+
+SUM:	add $v0, $a0, $a1
+		jr $ra
+
+		
+END:
+
+
+TPS 2:
+
+1. The output of the program should be 32, which is the result of adding x, y, and the result of calling the sum function with the input x.
+2. The MAIN function in proc2.s loads the values of x and y into registers $s0 and $s1, respectively, and then calls the SUM function with x as an argument. After SUM returns, MAIN adds the result to the sum of x and y, and prints the final value to the console. Compared to the C version, the MIPS code has explicit register usage and the function calls are handled with jal and jr instructions.
+3. When SUM calls SUB, it pushes the return address (the address to return to after SUB completes) onto the stack. This is because SUB also uses $ra as a temporary register, so it needs to save the previous value. After SUB completes, it restores the previous value of $ra by popping the return address from the stack. This ensures that when SUB returns, the program returns to the correct address in SUM.
+4. The value of $a0 is overwritten when SUM calls SUB with the input argument for SUB. This is a problem because SUB expects the input argument in $a0. To fix this, we can save the original value of $a0 into a temporary register before calling SUB, and then restore it after SUB returns. One possible register to use for this is $s2.
+5. Line 25 stores the value of $s0 onto the stack, effectively saving it as a temporary register. However, this can cause issues if the stack pointer is not restored correctly, as it can overwrite other data on the stack. To fix this, we can insert a prologue and epilogue into the code for SUM that explicitly saves and restores the stack pointer.
+6. 
+    addi $sp, $sp, -12
+    sw $ra, 0($sp)
+    sw $s0, 4($sp)
+    sw $s1, 8($sp)
+
+    lw $s1, 8($sp)
+    lw $s0, 4($sp)
+    lw $ra, 0($sp)
+    addi $sp, $sp, 12

@@ -1,0 +1,47 @@
+TPS 1:
+
+1. 
+2. 
+3. 
+4. 
+5. 
+6. 
+
+
+TPS 2:
+
+1. 
+2. 
+3. 
+    li $v0, 4
+    la $a0, prompt_msg
+    syscall
+
+    prompt_msg: .asciiz "Please enter an integer: "
+4. 
+    li $v0, 5
+    syscall
+    move $a0, $v0
+5. 
+    move $a0, $v0
+    li $v0, 1
+    syscall
+6. 
+    j end_recur
+7. 
+    sw $ra, 0($sp)
+8. 
+    add $v0, $v0, $a0
+9. 
+    move $v0, $v0
+10. 
+    sw $a0, 4($sp)
+11. 
+    sub $a0, $a0, 2
+12. 
+    move $a0, $v0
+
+    lw $a0, 4($sp)
+13. To update the next input argument, we need to subtract 2 from the current argument value and store it in register $a0 before jumping to the recursion label. We can use the instruction "addi $a0, $a0, -2" to achieve this.
+14. After returning from the second recursion call, we need to add the returned values in $v0 and $t0 and store the result in $v0 before jumping to the end_recur label. We can use the instruction "add $v0, $v0, $t0" to accomplish this.
+15. Before returning to main, the value that needs to be retrieved is the return address, which is stored in register $ra. We need to use the instruction "jr $ra" to return to the correct location in the code. This instruction should be placed under the end_recur label.

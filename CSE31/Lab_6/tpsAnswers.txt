@@ -1,0 +1,27 @@
+TPS 1
+
+1. 
+    Text Segment: 0x00400000
+    Data Segment: 0x10010000
+2. 
+    The text segment holds the machine language of the user program.
+    The data segment holds the data that the program operates on.
+3. 268500992 to 268501024
+4. 15
+5. It increases by 20 hex everytime
+6. 
+    .data
+        m: .word 20
+7. 0x00400014
+8. 
+    .data
+    str1: .asciiz "I love CSE31!"
+9. 0x10010000
+10. Yes, theyre stored backwords
+11. We have to do a system call for printing springs: load address of the spring, call operation system
+12. la loads the address
+
+
+TPS 2
+
+1. MIPS goal: Simpler is Better

@@ -1,0 +1,82 @@
+TPS 1
+
+1. 
+    Text Segment: 0x00400000
+    Data Segment: 0x10010000
+2. 
+    The text segment holds the machine language of the user program.
+    The data segment holds the data that the program operates on.
+3. 268500992 to 268501024
+4. 15
+5. It increases by 20 hex everytime
+6. 
+    .data
+        m: .word 20
+7. 0x00400014
+8. 
+    .data
+    str1: .asciiz "I love CSE31!"
+9. 0x10010000
+10. Yes, theyre stored backwords
+11. We have to do a system call for printing springs: load address of the spring, call operation system
+12. la loads the address
+
+
+TPS 2
+
+1. MIPS goal: Simpler is Better
+
+    .data 
+    n:	.word 25
+    str1: .asciiz "Less than\n"
+    str2: .asciiz "Less than or equal to\n"
+    str3: .asciiz "Greater than\n"
+    str4: .asciiz "Greater than or equal to\n"
+    str5: .asciiz "Enter a number: "
+
+    .text
+    main: 
+        la $a0, str5 # load address of str for syscall
+        li $v0, 4 # specify Print String service
+        syscall
+
+        la $s0, n # initialize registers with array size
+        lw $t1, 0($s0) # $t1 = size
+
+        li $v0, 5 #get user input and store it in $t0
+        syscall
+        move $t0, $v0
+        #blt $t0,$t1,less_than
+        #bge $t0,$t1,greater_than_or_equal
+        bgt $t0,$t1,greater_than
+        ble $t0,$t1,less_than_or_equal
+        
+        j end
+
+    less_than:
+        la $a0, str1 # load address of str1 for syscall
+        li $v0, 4 # specify Print String service
+        syscall
+        j end
+
+    greater_than_or_equal: 
+        la $a0, str4 # load address of str4 for syscall
+        li $v0, 4 # specify Print String service
+        syscall
+        j end
+
+    less_than_or_equal:
+        la $a0, str2 # load address of str2 for syscall
+        li $v0, 4 # specify Print String service
+        syscall
+        j end
+
+    greater_than: 
+        la $a0, str3 # load address of str3 for syscall
+        li $v0, 4 # specify Print String service
+        syscall
+        j end
+
+    end: 
+        li $v0, 10 # exit
+        syscall
