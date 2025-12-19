@@ -1,0 +1,21 @@
+1. My CPU has L1 Data, L1 Instruction, L2 Unified, and L3 Unified.
+2. 
+    L1 Data: 32KB
+    L1 Instruction: 32KB
+    L2 Unified: 256KB
+    L3 Unified: 8MB
+3. 
+    L1 Data: 64B
+    L1 Instruction: 64B
+    L2 Unified: 64B
+    L3 Unified: 64B
+4. 
+    L1 Data: Assoc 8
+    L1 Instruction: Assoc 8
+    L2 Unified: Assoc 4
+    L3 Unified: Assoc 16
+5. 
+    Tag bits: The tag bits are calculated as the total address bits (typically 48 bits) minus the index bits and offset bits. 
+                Since it is 8-way set associative, there are 8 sets, and hence the number of index bits is 3 (log2(8)).
+    Index bits: 3 (for 8 sets)
+    Offset bits: The block size is 64 bytes, which requires 6 bits (2^6 = 64), so the offset bits is 6.

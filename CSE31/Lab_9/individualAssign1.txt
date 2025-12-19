@@ -1,0 +1,87 @@
+Line #7:
+
+    Machine Code: 
+        Opcode for "addi": 001000
+        $zero register: 00000
+        $s0 register: 10000
+        Immediate value: -15 (in two's complement representation, which is 1111111111110001 in binary)
+
+        001000 00000 10000 1111111111110001
+    
+    Back to MIPS:
+        Opcode: 001000
+        $rs register: $zero (register 0)
+        $rt register: $s0 (register 16)
+        Immediate value: 1111111111110001 (in two's complement representation, which is -15 in decimal)
+
+        Opcode: 001000
+        $rs: $zero (register 0)
+        $rt: $s0 (register 16)
+        Immediate value: -15
+
+Line #14:
+
+    Machine Code: 
+        Opcode for "slt": 000000
+        $s0 register: 10000
+        $s1 register: 10001
+        $t0 register: 01000
+        Funct: 101010
+
+        000000 10000 10001 01000 00000 101010
+
+    Back to MIPS:
+        Opcode: 000000
+        $rs register: $s0 (register 16)
+        $rt register: $s1 (register 17)
+        $rd register: $t0 (register 8)
+        Shamt: 00000
+        Funct: 101010
+
+        Opcode: 000000
+        $rs: $s0 (register 16)
+        $rt: $s1 (register 17)
+        $rd: $t0 (register 8)
+        Shamt: 00000
+        Funct: 101010
+
+Line #17:
+
+    Machine Code: 
+        Opcode for "beq": 000100
+        $t0 register: 01000
+        $zero register: 00000
+        Offset for LEEQ: 
+            The offset is calculated as the signed 16-bit displacement between the address of the current instruction and the address of 
+            the target label LEEQ. In this case, let's assume the offset is 0x0100 (which is 256 in decimal). So, the binary representation 
+            of the offset is 0000 0001 0000 0000 in 16 bits.
+
+        000100 01000 00000 0000 0001 0000 0000
+
+    Back to MIPS:
+        Opcode: 000100
+        $rs register: $t0 (register 8)
+        $rt register: $zero (register 0)
+        Offset: 0000 0001 0000 0000 (binary) which is 0x0100 (hexadecimal) or 256 (decimal)
+
+        Opcode: 000100
+        $rs: $t0 (register 8)
+        $rt: $zero (register 0)
+        Offset: 0x0100 (hexadecimal) or 256 (decimal)
+
+Line #20:
+
+    Machine Code: 
+        Opcode for "j": 000010
+        Target address for GRT: 
+            The target address is the 26-bit address of the GRT label. In this case, let's assume the address of the GRT label is 0x00400018. 
+            So, the binary representation of the target address is 0000 0000 0100 0000 0000 0000 0001 1000 in 26 bits.
+        
+        000010 0000 0000 0100 0000 0000 0000 0001 1000
+
+    Back to MIPS:
+        Opcode: 000010
+        Target address: 0000 0000 0100 0000 0000 0000 0001 1000 (binary) which is 0x00400018 (hexadecimal) or 67108888 (decimal)
+
+        Opcode: 000010
+        Target address: 0x00400018 (hexadecimal) or 67108888 (decimal)

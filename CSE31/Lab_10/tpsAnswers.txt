@@ -1,0 +1,86 @@
+TPS 1:
+
+1. 
+    Processor and memory speed mismatch leads us to add a new level: a memory cache. 
+    Implemented with same integrated circuit processing technology as processor, integrated on-chip: faster 
+    but more expensive than DRAM memory. Cache is a copy of a subset of main memory. Modern processors have separate caches for instructions 
+    and data, as well as several levels of caches implemented in different sizes
+4. 
+    The block size of the cache is 16 bytes, then the number of offset bits required can be calculated as log (base 2) of 16.
+        Offset bits = log2(block size) = log2(16) = 4 bits
+5.
+   64 blocks in the cache: the number of index bits required can be calculated as the log (base 2) of the number of blocks.
+        Index bits = log2(number of blocks) = log2(64) = 6 bits
+6. 
+    The total size of the cache can be calculated by multiplying the number of blocks with the block size. 
+    EX: cache has 64 blocks and a block size of 16 bytes, the total size of the cache would be 64 blocks * 16 bytes/block = 1024 bytes.
+7.
+    The left-over bits from the address, which are not used for offset or index, are used for the tag. 
+    The tag represents the remaining bits from the address and is used to uniquely identify a specific block of data in the cache. 
+    The tag is compared with the tag stored in the cache during cache operations to determine if the requested data is present in 
+    the cache or needs to be fetched from main memory. The tag is important as it ensures the correct data is retrieved from cache and helps 
+    in maintaining cache coherence.
+8. 
+    a. 
+        The size of the main memory can be calculated by using the formula: Main Memory Size = 2^(Number of Address Bits). 
+        In this case, the memory address is 20 bits, so the main memory size would be 2^20 = 1,048,576 bytes or 1 MB.
+    b. 
+        The block size is given as 8B, which means it requires 3 bits to represent all possible byte positions within a block (2^3 = 8). 
+        Therefore, the number of offset bits is 3.
+    c. 
+        The cache size is given as 128B, and the block size is 8B. So the number of blocks in the cache can be calculated by 
+        dividing the cache size by the block size: Number of Blocks = Cache Size / Block Size = 128B / 8B = 16 blocks.
+    d. 
+        The number of index bits is determined by the number of blocks in the cache. As calculated in the previous step,
+        the number of blocks is 16, which can be represented using 4 bits (2^4 = 16). Therefore, the number of index bits is 4.
+    e. 
+        The tag bits can be calculated by subtracting the number of offset bits and index bits from the total number of address bits. 
+        In this case, the total number of address bits is 20, and we have 3 offset bits and 4 index bits. 
+        So the number of tag bits would be: Number of Tag Bits = Total Number of Address Bits - Number of Offset Bits - Number of Index Bits = 20 - 3 - 4 = 13.
+    f. 
+        | Tag (13 bits) | Valid Bit (1 bit) | Dirty Bit (1 bit) | Data Block (8 bytes) |
+        |----------------|-------------------|-------------------|----------------------|
+        |                |                   |                   |                      |
+        |                |                   |                   |                      |
+    g. 
+        The number of bits per row of the cache would be the sum of the number of bits used for the tag, valid bit, dirty bit, and data block. 
+        In this case, it would be: Number of Bits per Row = Number of Tag Bits + 1 (Valid Bit) + 1 (Dirty Bit) + 8 (Data Block) = 13 + 1 + 1 + 8 = 23 bits.
+
+TPS 2:
+
+1.
+    The disadvantage of a direct-mapped cache is that it can introduce a high rate of cache misses, particularly in cases where there 
+    are frequently accessed blocks that map to the same cache line or set. This is known as a "conflict miss" or "collision" in a direct-mapped cache. 
+    Conflict misses occur because two or more memory blocks map to the same cache line, and only one block can be stored in that cache line at a time. 
+    As a result, if multiple blocks are frequently accessed and map to the same cache line, they may repeatedly evict each other from the cache, 
+    leading to cache thrashing and reduced cache effectiveness.
+2. 
+    This statement is not clear. However, it seems to be referring to a set-associative cache, where multiple blocks of data can be stored in the same set, allowing for increased flexibility and reduced conflict misses compared to a direct-mapped cache.
+3. 
+    If a cache has 1024 blocks and an associativity of 4 (4 blocks per set), then the number of sets in the cache would be 1024 / 4 = 256 sets. The number of index bits required to represent these 256 sets would be 8 bits (2^8 = 256). The number of index bits as a function of the number of blocks and associativity can be calculated as log2(Number of Blocks / Associativity).
+4. 
+    a. 
+        The size of the main memory can be calculated using the formula: Main Memory Size = 2^(Number of Address Bits). 
+        In this case, the memory address is 20 bits, so the main memory size would be 2^20 = 1,048,576 bytes or 1 MB.
+    b. 
+        The block size is given as 8B, which means it requires 3 bits to represent all possible byte positions within a block (2^3 = 8). 
+        Therefore, the number of offset bits is 3.
+    c. 
+        The cache size is given as 128B, and the block size is 8B with a 2-way associativity. 
+        So the number of blocks in the cache would be 128B / 8B = 16 blocks.
+    d. 
+        The associativity of the cache is given as 2-way, which means there are 2 blocks per set. 
+        So the number of sets in the cache would be 16 blocks / 2 = 8 sets.
+    e. 
+        The number of index bits required to represent 8 sets is 3 bits (2^3 = 8). Therefore, the number of index bits is 3.
+    f. 
+        The tag bits can be calculated by subtracting the number of offset bits and index bits from the total number of address bits. 
+        In this case, the total number of address bits is 20, and we have 3 offset bits and 3 index bits. 
+        So the number of tag bits would be: Number of Tag Bits = Total Number of Address Bits - Number of Offset Bits - Number of Index Bits = 20 - 3 - 3 = 14.
+    g. 
+        The layout of the cache with 2-way associativity and 8 sets:
+        
+        | Set 0 | Set 1 | Set 2 | Set 3 | Set 4 | Set 5 | Set 6 | Set 7 |
+        |-------|-------|-------|-------|-------|-------|-------|-------|
+        | Tag  | Tag   | Tag   | Tag   | Tag   | Tag   | Tag   | Tag   |
+        | Valid | Valid | Valid

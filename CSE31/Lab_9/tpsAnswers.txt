@@ -1,0 +1,7 @@
+TPS 1:
+
+4. It depends on the computer
+6. addi $16, $0, 0x00000019
+7. 
+8. 
+9. 
