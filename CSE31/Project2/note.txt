@@ -1,0 +1,245 @@
+This program outputs:
+Original scores: 2 Enter the number of assignments (between 1 and 25): 5
+Enter score: 2
+Enter score: 22
+Enter score: 11
+Enter score: 7
+Enter score: 19
+Original scores: 2 2 2 2 2 
+Sorted scores (in descending order): 2 2 2 2 2 
+Enter the number of (lowest) scores to drop: 2
+Average (rounded down) with dropped scores removed: 0
+
+We want it to output: 
+Enter the number of assignments (between 1 and 25): 5
+Enter score: 2
+Enter score: 22
+Enter score: 11
+Enter score: 7
+Enter score: 19
+Original scores: 2 22 11 7 19
+Sorted scores (in descending order): 22 19 11 7 2
+Enter the number of (lowest) scores to drop: 2
+Average (rounded down) with dropped scores removed: 17
+
+Why does the original scores output incorrect
+Only show me new code, do not show me code I already have in the program.
+
+MIPS code we have:
+
+
+.data 
+
+orig: .space 100	# In terms of bytes (25 elements * 4 bytes each)
+sorted: .space 100
+
+str0: .asciiz "Enter the number of assignments (between 1 and 25): "
+str1: .asciiz "Enter score: "
+str2: .asciiz "Original scores: "
+str3: .asciiz "Sorted scores (in descending order): "
+str4: .asciiz "Enter the number of (lowest) scores to drop: "
+str5: .asciiz "Average (rounded down) with dropped scores removed: "
+
+space: .asciiz " "
+newline: .asciiz "\n"
+
+
+.text 
+
+# This is the main program.
+# It first asks user to enter the number of assignments.
+# It then asks user to input the scores, one at a time.
+# It then calls selSort to perform selection sort.
+# It then calls printArray twice to print out contents of the original and sorted scores.
+# It then asks user to enter the number of (lowest) scores to drop.
+# It then calls calcSum on the sorted array with the adjusted length (to account for dropped scores).
+# It then prints out average score with the specified number of (lowest) scores dropped from the calculation.
+main: 
+	addi $sp, $sp -4
+	sw $ra, 0($sp)
+	li $v0, 4 
+	la $a0, str0 
+	syscall 
+	li $v0, 5	# Read the number of scores from user
+	syscall
+	move $s0, $v0	# $s0 = numScores
+	move $t0, $0
+	la $s1, orig	# $s1 = orig
+	la $s2, sorted	# $s2 = sorted
+loop_in:
+	li $v0, 4 
+	la $a0, str1 
+	syscall 
+	sll $t1, $t0, 2
+	add $t1, $t1, $s1
+	li $v0, 5	# Read elements from user
+	syscall
+	sw $v0, 0($t1)
+	addi $t0, $t0, 1
+	bne $t0, $s0, loop_in
+	
+	move $a0, $s0
+	jal selSort	# Call selSort to perform selection sort in original array
+	
+	li $v0, 4 
+	la $a0, str2 
+	syscall
+	move $a0, $s1	# More efficient than la $a0, orig
+	move $a1, $s0
+	jal printArray	# Print original scores
+	li $v0, 4 
+	la $a0, str3 
+	syscall 
+	move $a0, $s2	# More efficient than la $a0, sorted
+	jal printArray	# Print sorted scores
+	
+	li $v0, 4 
+	la $a0, str4 
+	syscall 
+	li $v0, 5	# Read the number of (lowest) scores to drop
+	syscall
+	move $a1, $v0
+	sub $a1, $s0, $a1	# numScores - drop
+	move $a0, $s2
+	jal calcSum	# Call calcSum to RECURSIVELY compute the sum of scores that are not dropped
+	
+	# Your code here to compute average and print it
+	
+	move $s0, $a1 # adjust length of array to account for dropped scores
+	li $v0, 0 # initialize the sum of the scores
+	li $t0, 0 # initialize the number of scores
+	la $t1, sorted
+	#add $t2, $t1, ($s0 << 2) # $t2 = address of the last score to be included in the calculation
+	#
+	sll $t3, $s0, 2     # Shift the value in $s0 left by 2 to multiply by 4 (the word size)
+	add $t3, $t3, $t1   # Add the result to $t1
+	lw $t2, ($t3)       # Load the word from the address in $t3 into $t2
+	#
+	addi $t2, $t2, -4 # correct for the 0-based indexing of the array
+	loop_calcsum:
+    		lw $t3, ($t1)
+    		add $v0, $v0, $t3
+    		addi $t0, $t0, 1
+    		addi $t1, $t1, 4
+    		blt $t1, $t2, loop_calcsum
+    	
+    	# Compute the average score rounded down
+	div $t0, $t0, $a1
+	mflo $t0
+
+	# Print the average score
+	li $v0, 4
+	la $a0, str5
+	syscall
+	move $a0, $t0
+	li $v0, 1
+	syscall
+	
+	
+	lw $ra, 0($sp)
+	addi $sp, $sp 4
+	li $v0, 10 
+	syscall
+	
+	
+# printList takes in an array and its size as arguments. 
+# It prints all the elements in one line with a newline at the end.
+printArray:
+	# Your implementation of printList here	
+	li $t0, 0			# counter
+loop_out:
+	bge $t0, $a1, exit_pA
+    	sll $t1, $t0, 2        # Multiply $t0 by 4 to get byte offset
+    	add $t1, $t1, $a0      # Add the byte offset to the base address of the array
+    	li $v0, 1
+    	lw $a0, 0($s1)         # Load the element to be printed
+    	syscall
+    	li $v0, 4
+    	la $a0, space          # Print a space
+    	syscall
+    	addi $t0, $t0, 1
+    	j loop_out
+    	
+exit_pA:
+    	li $v0, 4
+    	la $a0, newline        # Print a newline
+    	syscall
+    	jr $ra
+	
+	
+# selSort takes in the number of scores as argument. 
+# It performs SELECTION sort in descending order and populates the sorted array
+selSort:
+	# Your implementation of selSort here
+
+    	addi $sp, $sp -8
+    	sw $s0, 0($sp)
+    	sw $s1, 4($sp)
+    	li $s0, 0           # $s0 will store the current max index
+outer_loop:
+    	beq $s0, $a1, done  # If $s0 == $a1, we're done
+    	move $s1, $s0        # $s1 will store the current index being compared to max
+    	addi $t0, $s0, 1    # $t0 will store the next index to start comparing to
+inner_loop:
+    	beq $t0, $a1, swap  # If $t0 == $a1, we're done with this pass, swap current max with $s0
+    	sll $t1, $s1, 2     # Convert indices to byte offset
+    	add $t1, $t1, $a0
+    	lw $t2, ($t1)       # Load element at $s1
+    	sll $t1, $t0, 2     # Convert indices to byte offset
+    	add $t1, $t1, $a0
+    	lw $t3, ($t1)       # Load element at $t0
+    	bgt $t2, $t3, update_max # Swap max index if element at $t0 is greater than element at $s1
+    	addi $t0, $t0, 1    # Increment index being compared to max
+    	j inner_loop         # Loop again
+update_max:
+    	move $s1, $t0        # Update max index
+    	addi $t0, $t0, 1    # Increment index being compared to max
+    	j inner_loop         # Loop again
+swap:
+    	sll $t1, $s0, 2     # Convert indices to byte offset
+    	add $t1, $t1, $a0
+    	lw $t2, ($t1)       # Load element at $s0
+    	sll $t1, $s1, 2     # Convert indices to byte offset
+    	add $t1, $t1, $a0
+    	lw $t3, ($t1)       # Load element at $s1
+    	sw $t2, ($t1)       # Store element at $s0 to $s1
+    	sw $t3, ($t1)       # Store element at $s1 to $s0
+    	addi $s0, $s0, 1    # Increment current max index
+    	j outer_loop
+done:
+    	lw $s0, 0($sp)
+    	lw $s1, 4($sp)
+    	addi $sp, $sp, 8
+    	jr $ra
+	
+	
+# calcSum takes in an array and its size as arguments.
+# It RECURSIVELY computes and returns the sum of elements in the array.
+# Note: you MUST NOT use iterative approach in this function.
+calcSum:
+	# Your implementation of calcSum here
+	addi $sp, $sp, -12
+    	sw $ra, 0($sp)
+    	sw $a0, 4($sp)
+    	sw $a1, 8($sp)
+
+    	# Base case: if len <= 0, return 0
+    	lw $t0, 8($sp)
+    	blez $t0, calcSum_done
+    	addi $a1, $a1, -1
+
+    	# Recursive case: return calcSum(arr, len - 1) + arr[len - 1]
+    	lw $t1, 4($sp)
+    	lw $t2, 8($sp)
+    	sll $t3, $t2, 2
+    	add $t4, $t1, $t3    # t4 = &arr[len-1]
+    	lw $t5, ($t4)        # t5 = arr[len-1]
+    	jal calcSum          # recursive call on arr[0..len-2]
+    	add $v0, $v0, $t5   # v0 = calcSum(arr, len - 1) + arr[len - 1]
+
+calcSum_done:
+    	lw $a0, 4($sp)
+    	lw $a1, 8($sp)
+    	lw $ra, 0($sp)
+    	addi $sp, $sp, 12
+    	jr $ra
